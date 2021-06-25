@@ -1,0 +1,37 @@
+version: "1.0"
+stages:
+  - "clone"
+  - "build"
+  - "push"
+
+steps:
+  clone:
+    title: "Cloning repository"
+    type: "git-clone"
+    repo: "codefresh-plugins/jira-issue-extractor"
+    revision: "${{CF_BRANCH}}"
+    git: "github"
+    stage: "clone"
+
+  build:
+    title: "Building Docker image"
+    type: "build"
+    image_name: "codefresh/argo-workflow-runner"
+    working_directory: "${{clone}}"
+    tag: "${{CF_BRANCH_TAG_NORMALIZED}}"
+    dockerfile: "Dockerfile"
+    registry: dockerhub
+    stage: "build"
+
+  push:
+    title: Pushing to Docker Registry
+    type: push
+    stage: push
+    candidate: '${{build}}'
+    tag: 'latest'
+    registry: dockerhub
+    when:
+      branch:
+        only:
+          - master
+
