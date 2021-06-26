@@ -20,7 +20,7 @@ class ArgoApi {
             const result = await this.axiosInstance.post(`${config.argoHost}/api/v1/workflows/argo`, payload);
             return result.data.metadata.name;
         } catch (error) {
-            if (error.response.data) {
+            if (error.response && error.response.data) {
                 logger.error(`Submit workflow failed with error : "${error.response.data.message}"`);
             } else {
                 logger.error(`Submit workflow failed with error : "${error.message}"`);
@@ -35,15 +35,15 @@ class ArgoApi {
 
         events.onmessage = (event) => {
             const parsedData = JSON.parse(event.data);
-            console.log(parsedData.result.content);
+            logger.plain(parsedData.result.content);
         };
 
         events.onerror = function (err) {
             if (err) {
                 if (err.status === 401 || err.status === 403) {
-                    console.log('not authorized');
+                    logger.error(`Failed to listen events, not authorized`);
                 }
-                console.log(err);
+                logger.error(err);
             }
         };
     }

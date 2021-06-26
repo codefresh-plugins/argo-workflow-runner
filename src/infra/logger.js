@@ -14,5 +14,9 @@ class Logger {
         console.log(chalk.green(msg));
     }
 
+    plain(msg) {
+        console.log(msg);
+    }
+
 }
 module.exports = new Logger();
