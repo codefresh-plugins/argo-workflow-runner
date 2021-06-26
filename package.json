@@ -5,6 +5,9 @@
   "repository": "git@github.com:codefresh-plugins/argo-workflow-runner.git",
   "author": "pashavictorovich <pavel@codefresh.io>",
   "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "axios": "0.21.1",
     "https": "1.0.0",
