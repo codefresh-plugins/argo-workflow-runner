@@ -35,3 +35,6 @@ steps:
         only:
           - main
 
+
+
+  cf_export first_CF_OUTPUT_URL="${{CF_URL}}/build/$BUILD_ID"

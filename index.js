@@ -1,6 +1,7 @@
 const argoApi = require('./src/argo.api');
 const config = require('./src/infra/configuration');
 const logger = require('./src/infra/logger');
+const envExporter = require('./src/infra/env-exporter');
 
 async function exec() {
     if (!config.argoHost) {
@@ -14,6 +15,9 @@ async function exec() {
     }
     argoApi.listenLogs(workflowName);
 
+    if (config.stepName) {
+        await envExporter.export(`${config.stepName}_CF_OUTPUT_URL`, 'google.com')
+    }
 }
 
 exec();
