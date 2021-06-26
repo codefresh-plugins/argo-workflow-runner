@@ -1,0 +1,14 @@
+{
+  "name": "argo-workflow-runner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:codefresh-plugins/argo-workflow-runner.git",
+  "author": "pashavictorovich <pavel@codefresh.io>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "0.21.1",
+    "https": "1.0.0",
+    "eventsource": "1.1.0",
+    "chalk": "4.1.1"
+  }
+}
