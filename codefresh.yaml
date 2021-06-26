@@ -33,5 +33,5 @@ steps:
     when:
       branch:
         only:
-          - master
+          - main
 
