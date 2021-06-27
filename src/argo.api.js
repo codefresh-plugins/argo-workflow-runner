@@ -17,7 +17,7 @@ class ArgoApi {
 
     async submitWorkflow(payload) {
         try {
-            logger.info(`Start submit workflow in ${config.argoHost} argo`);
+            logger.info(`Start submit workflow in ${config.argoHost} argo, payload ${JSON.stringify(payload)}`);
             const result = await this.axiosInstance.post(`${config.argoHost}/api/v1/workflows/argo`, payload);
             return result.data.metadata.name;
         } catch (error) {
