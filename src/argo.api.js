@@ -44,7 +44,7 @@ class ArgoApi {
                 if (err.status === 401 || err.status === 403) {
                     logger.error(`Failed to listen events, not authorized`);
                 }
-                logger.error(err);
+                logger.error(err.message);
             }
         };
     }
