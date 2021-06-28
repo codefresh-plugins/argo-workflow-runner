@@ -44,7 +44,7 @@ async function exec() {
 
     if (config.stepName) {
         logger.info(`Export CF_OUTPUT_URL variable to show external link`);
-        await envExporter.export(`${config.stepName}_CF_OUTPUT_URL`, 'google.com')
+        await envExporter.export(`${config.stepName}_CF_OUTPUT_URL`, `${config.argoHost}/workflows/argo/${workflowName}?tab=workflow`)
     }
 }
 
