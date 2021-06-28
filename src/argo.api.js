@@ -17,7 +17,7 @@ class ArgoApi {
 
     async submitWorkflow(payload) {
         try {
-            logger.info(`Start submit workflow in ${config.argoHost} argo, payload ${JSON.stringify(payload)}`);
+            logger.info(`Starting submit workflow`);
             const result = await this.axiosInstance.post(`${config.argoHost}/api/v1/workflows/argo`, payload);
             return result.data.metadata.name;
         } catch (error) {
@@ -30,7 +30,7 @@ class ArgoApi {
     }
 
     listenLogs(name) {
-        logger.info(`Start listen logs for workflow ${name}`);
+        logger.info(`Workflow "${name}" logs`);
 
         const events = new EventSource(`${config.argoHost}/api/v1/workflows/argo/${name}/log?logOptions.container=main&logOptions.follow=true`, { https: { rejectUnauthorized: false } });
 

@@ -43,6 +43,7 @@ async function exec() {
     argoApi.listenLogs(workflowName);
 
     if (config.stepName) {
+        logger.info(`Export CF_OUTPUT_URL variable to show external link`);
         await envExporter.export(`${config.stepName}_CF_OUTPUT_URL`, 'google.com')
     }
 }
