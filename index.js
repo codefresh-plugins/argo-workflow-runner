@@ -2,12 +2,29 @@ const argoApi = require('./src/argo.api');
 const config = require('./src/infra/configuration');
 const logger = require('./src/infra/logger');
 const envExporter = require('./src/infra/env-exporter');
+const yaml = require('js-yaml')
 
-function _fetchPayload() {
+function _fetchYamlPayload() {
+    try {
+        return yaml.load(config.workflow);
+    } catch (e) {
+        throw new Error('Failed to parse workflow yaml');
+    }
+}
+
+function _fetchJsonPayload() {
     try {
         return JSON.parse(config.workflow);
     } catch (e) {
         throw new Error('Failed to parse workflow json');
+    }
+}
+
+function getWorkflow() {
+    try {
+        return _fetchJsonPayload();
+    } catch (e) {
+        return _fetchYamlPayload();
     }
 }
 
@@ -17,7 +34,7 @@ async function exec() {
         return process.exit(1);
     }
 
-    const workflow = _fetchPayload();
+    const workflow = getWorkflow();
 
     const workflowName = await argoApi.submitWorkflow(workflow);
     if(!workflowName) {

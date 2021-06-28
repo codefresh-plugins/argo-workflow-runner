@@ -45,9 +45,8 @@ class ArgoApi {
                     logger.error(`Failed to listen events, not authorized`);
                 } else if (err.message) {
                     logger.error(err.message);
-                } else {
-                    events.close();
                 }
+                events.close();
             }
         };
     }
