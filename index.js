@@ -14,7 +14,10 @@ async function exec() {
 
     const workflow = util.getWorkflow(config.workflow);
 
-    const workflowName = await argoApi.submitWorkflow(workflow, host);
+    const workflowName = await argoApi.submitWorkflow({
+        namespace: config.namespace,
+        ...workflow
+    }, host);
     if(!workflowName) {
         return process.exit(1);
     }
