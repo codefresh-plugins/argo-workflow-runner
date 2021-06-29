@@ -2,31 +2,7 @@ const argoApi = require('./src/argo.api');
 const config = require('./src/infra/configuration');
 const logger = require('./src/infra/logger');
 const envExporter = require('./src/infra/env-exporter');
-const yaml = require('js-yaml')
-
-function _fetchYamlPayload() {
-    try {
-        return yaml.load(config.workflow);
-    } catch (e) {
-        throw new Error('Failed to parse workflow yaml');
-    }
-}
-
-function _fetchJsonPayload() {
-    try {
-        return JSON.parse(config.workflow);
-    } catch (e) {
-        throw new Error('Failed to parse workflow json');
-    }
-}
-
-function getWorkflow() {
-    try {
-        return _fetchJsonPayload();
-    } catch (e) {
-        return _fetchYamlPayload();
-    }
-}
+const util = require('./src/util');
 
 async function exec() {
     if (!config.argoHost) {
@@ -34,17 +10,19 @@ async function exec() {
         return process.exit(1);
     }
 
-    const workflow = getWorkflow();
+    const host = util.getHost(config.argoHost);
 
-    const workflowName = await argoApi.submitWorkflow(workflow);
+    const workflow = util.getWorkflow(config.workflow);
+
+    const workflowName = await argoApi.submitWorkflow(workflow, host);
     if(!workflowName) {
         return process.exit(1);
     }
-    argoApi.listenLogs(workflowName);
-
+    argoApi.listenLogs(workflowName, host);
     if (config.stepName) {
-        logger.info(`Export CF_OUTPUT_URL variable to show external link`);
-        await envExporter.export(`${config.stepName}_CF_OUTPUT_URL`, `${config.argoHost}/workflows/argo/${workflowName}?tab=workflow`)
+        const link = `${host}/workflows/argo/${workflowName}`;
+        logger.info(`Export "CF_OUTPUT_URL=${link}" variable to show external link`);
+        await envExporter.export(`${config.stepName}_CF_OUTPUT_URL`, link);
     }
 }
 

@@ -13,6 +13,16 @@ steps:
     git: "github"
     stage: "clone"
 
+  test:
+    title: Execute unit tests
+    image: node:12.18.0
+    working_directory: ${{clone}}
+    stage: build
+    commands:
+      - yarn install --dev-dependencies
+      - yarn test
+
+
   build:
     title: "Building Docker image"
     type: "build"

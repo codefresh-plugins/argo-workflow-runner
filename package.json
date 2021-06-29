@@ -6,13 +6,27 @@
   "author": "pashavictorovich <pavel@codefresh.io>",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "0.21.1",
     "chalk": "4.1.1",
     "eventsource": "1.1.0",
     "https": "1.0.0",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "4.1.0"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6",
+    "@jest/globals": "^26.6.2"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "testPathIgnorePatterns": [
+      "src/configuration"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
   }
 }

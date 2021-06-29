@@ -15,10 +15,10 @@ class ArgoApi {
         });
     }
 
-    async submitWorkflow(payload) {
+    async submitWorkflow(payload, host) {
         try {
             logger.info(`Starting submit workflow`);
-            const result = await this.axiosInstance.post(`${config.argoHost}/api/v1/workflows/argo`, payload);
+            const result = await this.axiosInstance.post(`${host}/api/v1/workflows/argo`, payload);
             return result.data.metadata.name;
         } catch (error) {
             if (error.response && error.response.data) {
@@ -29,10 +29,10 @@ class ArgoApi {
         }
     }
 
-    listenLogs(name) {
+    listenLogs(name, host) {
         logger.info(`Workflow "${name}" logs`);
 
-        const events = new EventSource(`${config.argoHost}/api/v1/workflows/argo/${name}/log?logOptions.container=main&logOptions.follow=true`, { https: { rejectUnauthorized: false } });
+        const events = new EventSource(`${host}/api/v1/workflows/argo/${name}/log?logOptions.container=main&logOptions.follow=true`, { https: { rejectUnauthorized: false } });
 
         events.onmessage = (event) => {
             const parsedData = JSON.parse(event.data);
